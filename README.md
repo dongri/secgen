@@ -1,5 +1,5 @@
 # secgen
-Generate Secure token
+Generate secure token
 
 # Usage
 
