@@ -1,5 +1,5 @@
 # secgen
-Generate Secret tokne
+Generate Secret token
 
 # Usage
 
