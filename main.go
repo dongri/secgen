@@ -38,12 +38,15 @@ func main() {
 			}
 		}
 	}
-	secret, err := generateRandomString(length)
-	if err != nil {
-		fmt.Print(err.Error())
-		return
+
+	for i := 0; i < qty; i++ {
+		secret, err := generateRandomString(length)
+		if err != nil {
+			fmt.Print(err.Error())
+			return
+		}
+		fmt.Println(secret)
 	}
-	fmt.Println(secret)
 }
 
 func generateRandomBytes(n int) ([]byte, error) {
