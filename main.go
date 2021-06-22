@@ -12,6 +12,8 @@ import (
 const (
 	DefaultLength = 10
 	DefaultQty    = 1
+
+	UsageMessage string = "usage: secgen <n: length> [option] <n: quantity>"
 )
 
 func main() {
@@ -19,13 +21,14 @@ func main() {
 	var qty int
 	var err error
 	if len(os.Args) < 2 {
-		fmt.Println("Please set length and quantity")
-		fmt.Println("usage: secgen <n: length> [option] <n: quantity>")
+		fmt.Println("Please set length (and quantity if you want)")
+		fmt.Println(UsageMessage)
 		return
 	} else {
 		length, err = strconv.Atoi(os.Args[1])
 		if err != nil {
-			fmt.Print(err.Error())
+			fmt.Println(err.Error())
+			fmt.Println(UsageMessage)
 			return
 		}
 
@@ -33,7 +36,8 @@ func main() {
 		if len(os.Args) > 2 {
 			qty, err = strconv.Atoi(os.Args[2])
 			if err != nil {
-				fmt.Print(err.Error())
+				fmt.Println(err.Error())
+				fmt.Println(UsageMessage)
 				return
 			}
 		}
