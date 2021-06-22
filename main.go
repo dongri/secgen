@@ -11,19 +11,31 @@ import (
 
 const (
 	DefaultLength = 10
+	DefaultQty    = 1
 )
 
 func main() {
 	var length int
+	var qty int
 	var err error
 	if len(os.Args) < 2 {
-		fmt.Print("Please set length")
+		fmt.Println("Please set length and quantity")
+		fmt.Println("usage: secgen <n: length> [option] <n: quantity>")
 		return
 	} else {
 		length, err = strconv.Atoi(os.Args[1])
 		if err != nil {
 			fmt.Print(err.Error())
 			return
+		}
+
+		qty = DefaultQty
+		if len(os.Args) > 2 {
+			qty, err = strconv.Atoi(os.Args[2])
+			if err != nil {
+				fmt.Print(err.Error())
+				return
+			}
 		}
 	}
 	secret, err := generateRandomString(length)
