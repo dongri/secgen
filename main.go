@@ -11,27 +11,46 @@ import (
 
 const (
 	DefaultLength = 10
+	DefaultQty    = 1
+
+	UsageMessage string = "usage: secgen <n: length> [option] <n: quantity>"
 )
 
 func main() {
 	var length int
+	var qty int
 	var err error
 	if len(os.Args) < 2 {
-		fmt.Print("Please set length")
+		fmt.Println("Please set length (and quantity if you want)")
+		fmt.Println(UsageMessage)
 		return
 	} else {
 		length, err = strconv.Atoi(os.Args[1])
 		if err != nil {
+			fmt.Println(err.Error())
+			fmt.Println(UsageMessage)
+			return
+		}
+
+		qty = DefaultQty
+		if len(os.Args) > 2 {
+			qty, err = strconv.Atoi(os.Args[2])
+			if err != nil {
+				fmt.Println(err.Error())
+				fmt.Println(UsageMessage)
+				return
+			}
+		}
+	}
+
+	for i := 0; i < qty; i++ {
+		secret, err := generateRandomString(length)
+		if err != nil {
 			fmt.Print(err.Error())
 			return
 		}
+		fmt.Println(secret)
 	}
-	secret, err := generateRandomString(length)
-	if err != nil {
-		fmt.Print(err.Error())
-		return
-	}
-	fmt.Println(secret)
 }
 
 func generateRandomBytes(n int) ([]byte, error) {
