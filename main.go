@@ -1,47 +1,26 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/big"
-	"os"
-	"strconv"
 
 	"crypto/rand"
+	"encoding/base64"
 )
 
-const (
-	DefaultLength = 10
-	DefaultQty    = 1
-
-	UsageMessage string = "usage: secgen <n: length> [option] <n: quantity>"
+var (
+	optLength   = flag.Int("l", 10, "\"i\" length")
+	optQuantity = flag.Int("q", 1, "\"q\" quantity")
+	optEncoding = flag.String("e", "", "\"e\" encoding (ex: base64)")
 )
 
 func main() {
-	var length int
-	var qty int
-	var err error
-	if len(os.Args) < 2 {
-		fmt.Println("Please set length (and quantity if you want)")
-		fmt.Println(UsageMessage)
-		return
-	} else {
-		length, err = strconv.Atoi(os.Args[1])
-		if err != nil {
-			fmt.Println(err.Error())
-			fmt.Println(UsageMessage)
-			return
-		}
+	flag.Parse()
 
-		qty = DefaultQty
-		if len(os.Args) > 2 {
-			qty, err = strconv.Atoi(os.Args[2])
-			if err != nil {
-				fmt.Println(err.Error())
-				fmt.Println(UsageMessage)
-				return
-			}
-		}
-	}
+	length := *optLength
+	qty := *optQuantity
+	encoding := *optEncoding
 
 	for i := 0; i < qty; i++ {
 		secret, err := generateRandomString(length)
@@ -49,17 +28,11 @@ func main() {
 			fmt.Print(err.Error())
 			return
 		}
+		if encoding == "base64" {
+			secret = base64.StdEncoding.EncodeToString([]byte(secret))
+		}
 		fmt.Println(secret)
 	}
-}
-
-func generateRandomBytes(n int) ([]byte, error) {
-	b := make([]byte, n)
-	_, err := rand.Read(b)
-	if err != nil {
-		return nil, err
-	}
-	return b, nil
 }
 
 func generateRandomString(n int) (string, error) {
